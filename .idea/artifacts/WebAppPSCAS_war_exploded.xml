@@ -1,0 +1,16 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="WebAppPSCAS:war exploded">
+    <output-path>$PROJECT_DIR$/out/artifacts/WebAppPSCAS_war_exploded</output-path>
+    <root id="root">
+      <element id="javaee-facet-resources" facet="WebAppPSCAS/web/Web" />
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="WebAppPSCAS" />
+        </element>
+        <element id="directory" name="lib">
+          <element id="library" level="project" name="info.debatty:java-string-similarity:1.0.1" />
+        </element>
+      </element>
+    </root>
+  </artifact>
+</component>
