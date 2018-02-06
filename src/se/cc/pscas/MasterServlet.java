@@ -31,7 +31,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 
-@WebServlet(name = "MasterServlet", urlPatterns = {"/login","/secured","/logout","/search","/checkStatus"}, loadOnStartup = 1,
+@WebServlet(name = "MasterServlet", urlPatterns = {"/login","/secured","/logout","/search","/checkStatus","/addCas"}, loadOnStartup = 1,
 
         initParams =  {@WebInitParam(name = "Admin",value="Apan Ola"), @WebInitParam(name = "Admin2",value="Apan Ola2") }
 
@@ -453,6 +453,23 @@ public class MasterServlet extends HttpServlet {
 
     }
 
+    private void handleAddCas(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+        response.setContentType("text/html; charset=UTF-8");
+        response.setCharacterEncoding("UTF-8");
+        request.setCharacterEncoding("utf-8");
+
+        String castoadd = request.getParameter("add_cas");
+        String password = request.getParameter("password");
+
+        PrintWriter writer = response.getWriter();
+        writer.println("trying to add CAS: " + castoadd);
+        writer.println();
+        writer.println("supplied password: " + password);
+
+
+    }
+
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
     }
@@ -485,6 +502,9 @@ public class MasterServlet extends HttpServlet {
         } else if(uri.endsWith("/checkStatus")) {
 
             checkStatus(request,response);
+        } else if(uri.endsWith("/addCas")) {
+
+            handleAddCas(request,response);
         }
 
 
