@@ -5,7 +5,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
+import java.io.*;
 
 /**
  * Created by crco0001 on 2/2/2018.
@@ -19,10 +19,7 @@ import javax.servlet.ServletException;
 import javax.servlet.annotation.WebInitParam;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
 import java.net.URL;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -43,6 +40,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 public class MasterServlet extends HttpServlet {
 
+    private final String osName = System.getProperty("os.name");
     private static final long serialVersionUID = 1L;
     private ScheduledExecutorService backgroundExecutor;
     private final AtomicReference<List<Person>> cachedPersons = new AtomicReference<List<Person>>();
@@ -122,6 +120,49 @@ public class MasterServlet extends HttpServlet {
         }
         rd.close();
         return result;
+    }
+
+    private synchronized void addTrustedCas(String cas) {
+
+        boolean isWinDev = false;
+        if(osName != null && osName.toLowerCase().contains("windows") )   isWinDev = true;
+
+        BufferedWriter writer = null;
+        File file = null;
+        if(isWinDev) {
+
+            file = new File("C:\\mnt\\pdata\\cas.txt");
+        } else{
+
+            file = new File("/mnt/pdata/cas.txt");
+        }
+
+
+        try {
+            writer = new BufferedWriter(new FileWriter(file,true) );
+            writer.newLine();
+            writer.append(cas);
+            writer.newLine();
+        } catch (IOException e) {
+
+
+        } finally {
+
+            if(writer != null) {
+
+                try {
+                    writer.flush();
+                    writer.close();
+                } catch (IOException e) {
+
+                    System.out.println("Could not close cas.txt");
+                }
+
+
+            }
+
+        }
+
     }
 
 
