@@ -183,13 +183,13 @@ public class MasterServlet extends HttpServlet {
         if (ticket == null) {
 
             //redirect to CAS server
-            response.sendRedirect("https://cas.test.umu.se/index.jsp?service=http://macbook.sytes.net:8080/login");
+            response.sendRedirect("https://cas.umu.se/index.jsp?service=http://macbook.sytes.net:8080/login");
 
 
         } else {
 
             //check if the login was valid, and if so get the user
-            String url = "https://cas.test.umu.se/validate?ticket=" + ticket + "&service=http://macbook.sytes.net:8080/login";
+            String url = "https://cas.umu.se/validate?ticket=" + ticket + "&service=http://macbook.sytes.net:8080/login";
 
             List<String> validationBody = null;
             String user = null;
@@ -296,7 +296,7 @@ public class MasterServlet extends HttpServlet {
         if (session != null) session.invalidate();
         //PrintWriter out = response.getWriter();
         //out.println("Session now invalidated..");
-        response.sendRedirect("https://cas.test.umu.se/logout");
+        response.sendRedirect("https://cas.umu.se/logout");
 
 
     }
