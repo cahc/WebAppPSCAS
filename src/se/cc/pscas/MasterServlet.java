@@ -12,6 +12,7 @@ import java.io.*;
  */
 import info.debatty.java.stringsimilarity.Cosine;
 import info.debatty.java.stringsimilarity.NormalizedLevenshtein;
+import org.jasypt.util.password.BasicPasswordEncryptor;
 
 import javax.net.ssl.HttpsURLConnection;
 import javax.servlet.ServletConfig;
@@ -122,8 +123,8 @@ public class MasterServlet extends HttpServlet {
         return result;
     }
 
-    private synchronized void addTrustedCas(String cas) {
-
+    private synchronized boolean addTrustedCas(String cas) {
+        boolean itWorked = true;
         boolean isWinDev = false;
         if(osName != null && osName.toLowerCase().contains("windows") )   isWinDev = true;
 
@@ -145,6 +146,8 @@ public class MasterServlet extends HttpServlet {
             writer.newLine();
         } catch (IOException e) {
 
+            System.out.println(e.getLocalizedMessage());
+            itWorked = false;
 
         } finally {
 
@@ -156,11 +159,14 @@ public class MasterServlet extends HttpServlet {
                 } catch (IOException e) {
 
                     System.out.println("Could not close cas.txt");
+
+
                 }
 
 
             }
 
+            return itWorked;
         }
 
     }
@@ -216,12 +222,27 @@ public class MasterServlet extends HttpServlet {
 
             } else {
 
-                //create a session
-                HttpSession session = request.getSession(true);
-                session.setAttribute("userAllowed", true);
+
+                //finally check if it is an allowed cas/user
+
+                boolean specialPrivilige = this.authoritizedCAS.contains(user.toLowerCase());
+
+                if(specialPrivilige) {
+
+                    //create a session
+                    HttpSession session = request.getSession(true);
+                    session.setAttribute("userAllowed", true);
+
+                    request.getRequestDispatcher("/secured").forward(request, response);
+
+                } else {
 
 
-                request.getRequestDispatcher("/secured").forward(request, response);
+                    request.getRequestDispatcher("error.html").forward(request, response);
+
+                }
+
+
             }
 
 
@@ -282,7 +303,7 @@ public class MasterServlet extends HttpServlet {
 
     private void handleSearch(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        ////not allowed to access this without being loged in//////////////////
+        ////not allowed to access this without being logged in//////////////////
 
         HttpSession session = request.getSession(false);
 
@@ -444,6 +465,7 @@ public class MasterServlet extends HttpServlet {
 
         int n = this.authoritizedCAS.size();
 
+
         response.setContentType("text/html; charset=UTF-8");
         response.setCharacterEncoding("UTF-8");
         request.setCharacterEncoding("utf-8");
@@ -455,17 +477,46 @@ public class MasterServlet extends HttpServlet {
 
     private void handleAddCas(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+
         response.setContentType("text/html; charset=UTF-8");
         response.setCharacterEncoding("UTF-8");
         request.setCharacterEncoding("utf-8");
 
         String castoadd = request.getParameter("add_cas");
-        String password = request.getParameter("password");
+        String plainTextPassword = request.getParameter("password");
+
+
+        BasicPasswordEncryptor textEncryptor = new BasicPasswordEncryptor();
+        String encryptedPassword = "M7yEv5WaVQDBppmuPJfkQ0ibN078a9TL";
 
         PrintWriter writer = response.getWriter();
-        writer.println("trying to add CAS: " + castoadd);
-        writer.println();
-        writer.println("supplied password: " + password);
+
+        if (textEncryptor.checkPassword(plainTextPassword, encryptedPassword)) {
+
+            if(castoadd == null || castoadd.length() < 4) {
+
+                writer.println("trying to add null och invalid cas!");
+
+            } else {
+
+                //persist to file
+                boolean check = addTrustedCas( castoadd.trim().toLowerCase()  );
+
+                //had to hashTable
+                this.authoritizedCAS.add(castoadd.trim().toLowerCase() );
+
+
+                writer.println("add operation successful: " + check);
+
+            }
+
+
+        } else {
+
+
+            writer.println("wrong password!");
+
+        }
 
 
     }

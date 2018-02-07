@@ -38,6 +38,7 @@ public class ReadCAS {
             while(  (line = reader.readLine())  != null  ) {
 
                 String cas = line.toLowerCase().trim();
+                if(cas.length() < 3) continue;
                 casList.add(cas);
             }
 

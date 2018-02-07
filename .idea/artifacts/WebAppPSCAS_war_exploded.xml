@@ -9,6 +9,7 @@
         </element>
         <element id="directory" name="lib">
           <element id="library" level="project" name="info.debatty:java-string-similarity:1.0.1" />
+          <element id="library" level="project" name="org.jasypt:jasypt:1.9.2" />
         </element>
       </element>
     </root>
