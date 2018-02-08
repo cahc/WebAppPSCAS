@@ -183,13 +183,13 @@ public class MasterServlet extends HttpServlet {
         if (ticket == null) {
 
             //redirect to CAS server
-            response.sendRedirect("https://cas.umu.se/index.jsp?service=http://macbook.sytes.net:8080/login");
+            response.sendRedirect("https://cas.umu.se/index.jsp?service=https://delta.ub.umu.se/login");
 
 
         } else {
 
             //check if the login was valid, and if so get the user
-            String url = "https://cas.umu.se/validate?ticket=" + ticket + "&service=http://macbook.sytes.net:8080/login";
+            String url = "https://cas.umu.se/validate?ticket=" + ticket + "&service=https://delta.ub.umu.se/login";
 
             List<String> validationBody = null;
             String user = null;
