@@ -34,6 +34,10 @@ https://www.mkyong.com/jquery/jquery-ajax-submit-a-multipart-form/
                     success: function(result) {
 
                         $('#resultat').html(result);
+                    },
+
+                    statusCode: {
+                        302 : function() { window.location.reload(); }
                     }
                 });
             });
