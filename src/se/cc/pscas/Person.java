@@ -35,6 +35,7 @@ public class Person {
 
     final static DecimalFormat formatter = new DecimalFormat("#0.000");
 
+    //todo temp null check below, for broken data, logic needs to be completely rewritten
     public void mergeEmploymentPeriods() {
 
         //remove any duplicates if present (why is there duplicates sometimes?)
@@ -63,7 +64,8 @@ public class Person {
 
                 Period p2 = this.employmentList.get(i);
 
-                if(p1.getOrganisationNumber().equals(p2.getOrganisationNumber()) && p1.getPosition().equals(p2.getPosition()) && addDays(p2.getEndDate(),1).equals(p1.getStartDate())   ) {
+
+                if(p1.getOrganisationNumber().equals(p2.getOrganisationNumber()) && p1.getPosition().equals(p2.getPosition()) && ( p2.getEndDate() != null ) && addDays(p2.getEndDate(),1).equals(p1.getStartDate())   ) {
 
                     p1.setStartDate(p2.getStartDate() );
                     i++;
@@ -103,6 +105,7 @@ public class Person {
 
     }
 
+    //todo temp null check below, for broken data, logic needs to be completely rewritten
     public void mergeAffiliationPeriods() {
 
         //remove any duplicates if present (why is there duplicates sometimes?)
@@ -131,7 +134,7 @@ public class Person {
 
                 Period p2 = this.affiliationList.get(i);
 
-                if(p1.getOrganisationNumber().equals(p2.getOrganisationNumber()) && p1.getPosition().equals(p2.getPosition()) && addDays(p2.getEndDate(),1).equals(p1.getStartDate())   ) {
+                if(p1.getOrganisationNumber().equals(p2.getOrganisationNumber()) && p1.getPosition().equals(p2.getPosition()) && ( p2.getEndDate() != null ) && addDays(p2.getEndDate(),1).equals(p1.getStartDate())   ) {
 
                     p1.setStartDate(p2.getStartDate() );
                     i++;
