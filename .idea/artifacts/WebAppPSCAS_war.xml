@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="WebAppPSCAS:war">
+    <output-path>$PROJECT_DIR$/out/artifacts/WebAppPSCAS_war</output-path>
+    <root id="archive" name="WebAppPSCAS_war.war">
+      <element id="artifact" artifact-name="WebAppPSCAS:war exploded" />
+    </root>
+  </artifact>
+</component>

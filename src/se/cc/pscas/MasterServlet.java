@@ -16,9 +16,7 @@ import org.jasypt.util.password.BasicPasswordEncryptor;
 
 import javax.net.ssl.HttpsURLConnection;
 import javax.servlet.ServletConfig;
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebInitParam;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import java.io.IOException;
 import java.net.URL;
@@ -126,14 +124,20 @@ public class MasterServlet extends HttpServlet {
     private synchronized boolean addTrustedCas(String cas) {
         boolean itWorked = true;
         boolean isWinDev = false;
+        boolean isMacDev = false;
+
         if(osName != null && osName.toLowerCase().contains("windows") )   isWinDev = true;
+        if(osName != null && osName.toLowerCase().contains("mac os") )   isMacDev = true;
 
         BufferedWriter writer = null;
         File file = null;
         if(isWinDev) {
 
             file = new File("C:\\mnt\\pdata\\cas.txt");
-        } else{
+        } else if(isMacDev){
+
+            file = new File("/Users/cristian/pdata/cas.txt");
+        } else {
 
             file = new File("/mnt/pdata/cas.txt");
         }
@@ -282,7 +286,7 @@ public class MasterServlet extends HttpServlet {
         //forward to search page if no search parameters are given
 
 
-        request.getRequestDispatcher("WEB-INF/searcher.html").forward(request, response);
+        request.getRequestDispatcher("WEB-INF/index.html").forward(request, response);
 
     }
 
@@ -303,6 +307,7 @@ public class MasterServlet extends HttpServlet {
 
     private void handleSearch(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+        /*
         ////not allowed to access this without being logged in//////////////////
 
         HttpSession session = request.getSession(false);
@@ -329,6 +334,8 @@ public class MasterServlet extends HttpServlet {
         }
 
         /////////////////////////////////////////////////////////////////////////
+
+*/
 
 
         response.setContentType("text/html; charset=UTF-8");

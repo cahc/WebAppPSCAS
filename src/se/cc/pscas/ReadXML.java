@@ -41,13 +41,19 @@ public class ReadXML {
 
 
         boolean isWinDev = false;
+        boolean isMacDev = false;
+
         if(osName != null && osName.toLowerCase().contains("windows") )   isWinDev = true;
+        if(osName != null && osName.toLowerCase().contains("mac os") )   isMacDev = true;
 
         File dir = null;
         if(isWinDev) {
 
             dir = new File("C:\\mnt\\pdata");
-        } else{
+        } else if(isMacDev){
+
+            dir = new File("/Users/cristian/pdata");
+        } else {
 
             dir = new File("/mnt/pdata");
         }
